@@ -1,0 +1,68 @@
+# Hybrid mapping source notes
+
+These notes trace the new mapping contract to the user-supplied INDM and Gemini papers and the local Gemini implementation. They describe a new system rather than retaining the old K-only search restrictions.
+
+## What is being combined
+
+Gemini's Section IV encodes each layer using a four-dimensional output partition, an ordered compute group, and explicitly managed DRAM placement. Its output dimensions are batch, output channel, height, and width; input and weight requirements are derived from the layer semantics. Two dependent layers in the same layer group communicate directly. A tensor crossing a layer-group boundary is materialized in DRAM. Section V-B combines graph partitioning and pipeline batch-unit selection with five spatial-mapping mutations. Section V-B2 evaluates operation counts, memory accesses, routed traffic, DRAM accesses, and component energy.
+
+The local implementation under `C:/Users/user/Downloads/GEMINI-HPCA2024-master/GEMINI-HPCA2024-master` confirms these mechanisms:
+
+- `include/partition.h`, `src/partition.cpp`: integer B/K/H/W factorization, approximate equal output shards, utilization checks.
+- `include/datalayout.h`: rectangular tensor ranges, unique producer layouts, broadcast consumer layouts, and their intersections.
+- `src/spatial_mapping/light_placement.cpp`: partition, ordered placement, core-allocation, and DRAM mutations.
+- `include/ltreenode.h`, `src/schnode.cpp`: temporal cuts, spatial cuts, pipeline stages, batch groups, buffer usage, and explicit DRAM boundaries.
+
+INDM Sections III-B/C and IV supply the hierarchical architecture, architecture resource partitioning, output P/Q/K partitioning, and the importance of transition costs. Its Section IV-A distinguishes spatial halo transfers, channel all-gather, and their combination. Fig. 10 uses forwarding through a directional ring for all-gather. Section IV-C accounts for traffic on each physical link and identifies the bottleneck as required bandwidth divided by physical bandwidth. The on-die rings serve PE/L2 reuse; the package network is a cluster network through I/O dies.
+
+## New mapping contract
+
+1. Preserve the actual DAG, including both operands of residual Add and every tensor's producer and consumers. An operator is evaluated once per microbatch, including shared ancestors.
+2. A mapping supplies B/K/H/W integer output partitions and an ordered compute-core assignment. A core is a scheduling slot such as `compute:0/core:2`, not an additional physical die. It does not split input channels across chiplets; vector input-channel parallelism is local to a PE.
+3. Each output shard owns an exact half-open tensor box. Conv input boxes are derived with kernel, stride, padding, dilation, and channel groups; this includes clipped halo regions. Linear, elementwise, pool, and flatten operators have explicit input transformations.
+4. Tiling splits a shard into smaller work units without changing its primary ownership. A work unit carries exact output elements, required input regions, weight region, MAC count, temporary buffer requirement, and microbatch identity.
+5. Workload requirements and physical transfers are separate. Intersections of producer ownership with consumer requirements define data demands. A collective planner groups identical regions for multicast or emits forwarding steps for a ring; it never changes the required output values.
+6. Same-group data remain in chiplet buffers until their last consumer. Cross-group tensors have one explicit write to DRAM followed by explicit reads. Residual tensors remain live across their skip path; their storage cannot be silently freed at the next layer.
+7. Spatial layer groups dedicate disjoint compute sets to stages. Distinct microbatches can overlap subject to compute, network, memory-controller, and buffer resources. Temporal groups share chiplets and serialize their operator use. Pipeline fill and drain are included in reported latency.
+8. Weight and activation reuse have stated lifetimes. Keeping weights resident requires buffer space and does not create free capacity. Tiling that exceeds persistent capacity requires explicit reloads or is rejected.
+
+## Deliberate adaptations
+
+- RL selects the mutation family and concrete legal operand choices rather than using Gemini's simulated-annealing acceptance rule. The five paper operators remain identifiable; additional group-boundary and microbatch actions are extensions.
+- Mapping changes physical workload placement while topology is fixed during an evaluation. Outer architecture exploration changes compute, I/O, memory, local-ring, and package resources and pays their area/energy costs.
+- Pipeline latency is measured from a resource-constrained event schedule rather than merely summing layer latencies. This permits residual branches and uneven stage service times without double-counting shared work.
+- Independent energy and latency totals are retained; adding local energy-delay products is not treated as the exact global EDP.
+- Any analytical transfer model states its serialization/overlap assumptions. The INDM paper's reported validation error does not apply automatically to this implementation.
+
+## Implemented planner and architecture partitioning
+
+`hybrid/planner.py` provides a bounded beam over contiguous topological DAG cuts and valid microbatch sizes. Its boundary-tensor calculation uses actual producer/consumer edges, so two users of a residual tensor do not cause the producer or a boundary write to be evaluated twice. Layer groups are spatial pipeline groups or temporal groups sharing compute resources. Spatial groups use a compute/bandwidth-aware integer allocator rather than assigning the same number of cores to cheap vector layers and large convolutions.
+
+The allocator considers the integer SIMD rounds implied by output partition shapes, local memory service, and a full-data unified-buffer pressure estimate. The pressure term estimates `weight bytes + 2 * (input bytes + output bytes + accumulator bytes)` against a conservative per-core share of the physical die's unified SRAM. This accounts for the two-microbatch admission window in a proposal heuristic. It is not an efficiency coefficient, measured latency, or reward bonus. The full event evaluator independently calculates latency and live storage; infeasible candidates are rejected there.
+
+Both multi-ring and mesh proposals use the same logical input/weight/output bytes and injection lower bound. The planner never multiplies mesh weights by PE count. The actual on-die route model determines multicast sharing, ring reinjection, link loads, latency, and energy. These differences can affect final full-plan ranking without a manually assigned topology advantage.
+
+Local tile fitting uses physical PE L1 SRAM plus an equal share of die L2: `pes_per_core * l1_bytes_per_pe + l2_bytes_per_die / cores_per_die`. The unified buffer stores full received regions independently; reducing a temporal input-channel tile does not remove those stored bytes. A local output/partial-sum copy and a globally visible output copy are separate conservative storage allocations. Spatial output tiles reload weights under the cold policy. The evaluator's persistent policy may merge identical weight reads only when its full lifetime fits the real shared capacity.
+
+The beam carries delay and energy separately and ranks complete prefix histories. Its group service uses critical paths through actual dependencies, a pipeline fill/drain estimate, boundary bytes, cold or persistent weight-read estimates, and aggregate DRAM bandwidth. Final proposals retain microbatch and graph-cut diversity before filling the remaining budget with FD variants. This prevents a local lower-bound estimate from excluding all other microbatch regimes. It is a bounded proposal method; it does not claim exact global EDP, exact routed congestion, or exact residual liveness. `choose_plan` ranks complete candidates using the full event evaluator and returns a JSON summary that clearly separates estimates and evaluated metrics.
+
+`hybrid/architecture.py` partitions a conserved resource budget into 4, 8, or 16 compute dies and corresponding 1, 2, or 4 four-compute I/O clusters. It supports both local mesh and multi-ring candidates. The default budget conserves 256 PEs, 64 mapping cores, 65.536 TMAC/s, 32MiB unified SRAM, total PE L1 and distributed W/A/O L2 capacity, 75GB/s aggregate DRAM bandwidth, and 8GiB aggregate DRAM capacity. Each candidate changes real PHY/control/I/O/DDR/crossbar replication and die dimensions. It does not assume fixed silicon cost or free aggregate NoP bandwidth as die count changes.
+
+Unified SRAM is also an explicit hardware search dimension. The source-pinned batch-8 grouped plan with microbatch size 1 and admission window 2 requires 3,682,912 bytes on its busiest physical die under both cold and persistent weight policies. It fails the 2MiB reference profile; its diagnostic latency is not a deployable performance result. The batch-1 grouped reference fits 2MiB. `tools/check_hybrid_mapping_capacity.py` therefore adds a distinct 4MiB-per-die profile with the original 2MiB mapping unchanged. This expands total unified SRAM from 32MiB to 64MiB, so it is a capacity extension, separate from the conserved-budget architecture partitioning experiment.
+
+Native RapidChiplet placement and component costs are recalculated for the larger SRAM. The physical model changes total silicon from 190.5218 to 216.3990 mm², package footprint from 231.1431 to 260.1987 mm², and idle power from 2.16225 to 2.68849 W. The idle increase includes changed physical link lengths. These costs use the stated uncalibrated SRAM/logic/PHY coefficients; they are not measurements of fabricated silicon. The capacity extension is evaluated with the same two-microbatch admission window, rather than obtaining a legal result solely by disabling pipeline overlap.
+
+## Validation coverage
+
+The mapping tests check exact MAC/output coverage with uneven integer shards, residual operands, grouped convolution and stride/dilation halo envelopes, single-consumer post-op fusion, multicast shared bytes, explicit DRAM write-to-read dependencies, globally consistent DRAM interleaving, ring forwarding dependencies, full traffic conservation under C tiling, weight reloads for spatial tiles, physical local tile capacity, and invalid pipeline overlap.
+
+Planner tests check conserved architecture resources, legal geometry/ports, real residual boundary tensors, unequal vector/Conv allocation, bounded complete DAG/microbatch proposals, mesh/ring logical fairness, and full-evaluator ranking with JSON-safe infeasible results. `tools/check_hybrid_mapping_feasibility.py` records four ResNet cases: a batch-1 grouped baseline, batch-8 grouped cold weights, batch-8 grouped persistent weights, and batch-8 layer-at-a-time temporal groups with persistent weights. The fixed hardware, pipeline admission window, complete plans, per-run source hashes, and source-stability flag make the comparison reviewable. Reuse-only comparisons keep the mapping identical; grouped-vs-temporal comparisons change both layer grouping and balanced core allocation, so their gains are not attributed to pipeline alone. These are analytical model comparisons, not calibrated silicon accuracy.
+
+The capacity augmentation retains completed rows and their runner hash, appends two fresh native evaluations for 4MiB cold/persistent weights, and records the complete hardware and window for every row in `results/hybrid_mapping_capacity_validation.json`. It writes independently of the original baseline runner, so a slow optional temporal case cannot create a file race. Cold and persistent mappings must be identical except for weight policy. Latency, energy, and traffic reductions are scored only when both sides pass physical capacity checks. This preserves the invalid 2MiB batch-8 findings as architecture constraints rather than presenting them as improvements. The separate `tools/check_hybrid_resnet_searches.py` uses the same balanced initial plan, independent evaluator/search caches, seed 7, and eight charged designs for RL, random, greedy, and SA; this small run verifies integration and makes no convergence or superiority claim. Independent benchmark processes may run concurrently under the same source freeze; wall times are recorded for auditability but only design-query quality is compared.
+
+The optional batch-8 layer-at-a-time temporal baseline was stopped after its authorized wall-time limit, with completed rows preserved and no latency/energy result claimed for the unfinished case. A read-only compiler diagnosis finds 37,320 work units and 4,665 distinct normalized on-die cache keys, compared with 12,792 units and 1,599 keys for the grouped plan. The frozen memo limit is 4,096 and units are traversed with microbatch as the outer loop: the temporal plan consequently evicts a complete microbatch's keys before the next microbatch. This is an evaluator runtime limitation; it does not invalidate the grouped physical results or establish an accelerator speedup. The host clock also advanced from approximately 03:35 to 08:16 while process CPU advanced only several minutes, so wall durations include a host pause and are unsuitable for evaluator performance claims.
+
+## Source documents
+
+- Gemini, *Mapping and Architecture Co-exploration for Large-scale DNN Chiplet Accelerators*, HPCA 2024, Sections IV and V-B, Figs. 3-4.
+- INDM, *Chiplet-Based Interconnect Network and Dataflow Mapping for DNN Accelerators*, TCAD 43(4), 2024, Sections III-B/C and IV-A/C, Figs. 3 and 8-12.

@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "tests": 166,
+  "skipped": 0,
+  "native_commit": "17176f92c91eda629a25bc11bf7959d6b963a23b",
+  "toy_rl_native_smoke": true,
+  "archival_gui_rows_verified": 15,
+  "archival_gui_artifacts_verified": 45,
+  "reference_archive_files_verified": 581,
+  "tracked_candidate_files": 118,
+  "bytes": 12086831,
+  "credential_scan_passed": true,
+  "source_policy": "Frozen original archive unchanged. Published source only changes dependency discovery/config and tooling; new source tested separately."
+}

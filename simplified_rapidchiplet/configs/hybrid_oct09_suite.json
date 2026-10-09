@@ -1,0 +1,15 @@
+{
+  "models": ["resnet18", "resnet50", "vgg16", "mobilenet_v2", "alexnet"],
+  "preference": "balanced",
+  "batch": 1,
+  "budget": 4,
+  "seed": 7,
+  "dies": [4, 8, 16],
+  "noc": ["multi_ring"],
+  "ub_mib": 8,
+  "prefetch_slots": 2,
+  "dataflow": "auto",
+  "planner": "traffic_dp",
+  "groups": 3,
+  "method": "rl"
+}

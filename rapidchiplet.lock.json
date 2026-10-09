@@ -1,0 +1,11 @@
+{
+  "repository": "https://github.com/spcl/rapidchiplet.git",
+  "commit": "17176f92c91eda629a25bc11bf7959d6b963a23b",
+  "reference_sha256": {
+    "rapidchiplet.py": "8d4e87aa6426b97ff60ab1c003fd82501b176645daf52d26acc9c56f1f8d1121",
+    "helpers.py": "fd0332314566345c70efc62a50b3cfa90f4ab426148102c45ab77256e687f5bc",
+    "validation.py": "4c7e3633ff40cc0c96e84c6bc98c9050c581d453015ab912bf2588465202ffdc",
+    "booksim_wrapper.py": "840426c7f1f4929bbdfa6081f32d3b965b988b8019d22e4708b8520788705fa1"
+  },
+  "scope": "Native Python analytical engine; no BookSim build required for hybrid evaluation."
+}

@@ -1,0 +1,2 @@
+rl seed=7: feasible=True latency=0.0473ms energy=0.1179mJ area=205.793mm² (1.6s)
+Artifacts: C:\Users\user\Desktop\rapidchiplet\output\github_10-09\simplified_rapidchiplet\results\publish_smoke

@@ -1,0 +1,61 @@
+{
+  "evaluation": {
+    "max_chiplets": 16
+  },
+  "search": {
+    "assignment_top_k": 4,
+    "learning_rate": 0.35,
+    "discount": 1.0,
+    "exploration": 0.25,
+    "exhaustive_max_evaluations": 200000
+  },
+  "chiplet": {
+    "pe_rows": 8,
+    "pe_cols": 8,
+    "frequency_hz": 200000000,
+    "op_per_mac": 2,
+    "ops_per_pe_per_cycle": 2,
+    "utilization": 0.75,
+    "width_mm": 8.79772697916911,
+    "spacing_mm": 0.15,
+    "internal_latency_cycles": 3,
+    "phy_latency_cycles": 12,
+    "sram_mb": 16.0
+  },
+  "network": {
+    "link_bandwidth_bits_per_cycle": 256,
+    "link_latency_base_cycles": 1,
+    "link_latency_cycles_per_mm": 0.25
+  },
+  "power": {
+    "chiplet_static_w": 0.15,
+    "chiplet_peak_dynamic_w": 0.85,
+    "phy_w": 0.03,
+    "link_static_w_per_mm": 0.005,
+    "link_dynamic_pj_per_bit": 0.5,
+    "proxy_reference_activity_hz": 15
+  },
+  "reference_model": {
+    "name": "torchvision.models.resnet50",
+    "variant": "ResNet-50 v1.5",
+    "input_shape": [1, 3, 224, 224],
+    "num_classes": 1000,
+    "activation_precision": "FP32",
+    "weight_precision": "FP32",
+    "activation_bytes_per_element": 4,
+    "weight_bytes_per_element": 4,
+    "initial_input_source": "EXTERNAL",
+    "weights_source": "EXTERNAL"
+  },
+  "rapidchiplet": {
+    "root": "../../external/rapidchiplet",
+    "technology_file": "inputs/technologies/example_technologies.json",
+    "chiplet_file": "inputs/chiplets/chiplets_example_experiment.json",
+    "chiplet_name": "example_experiment",
+    "packaging_file": "inputs/packagings/example_packaging.json",
+    "technology": "tech_1",
+    "chiplet_power_w": 20.5,
+    "fraction_power_bumps": 0.5,
+    "phy_fraction_bump_area": 0.25
+  }
+}

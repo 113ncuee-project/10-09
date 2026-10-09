@@ -1,0 +1,498 @@
+{
+  "dataset": "ImageNet-1k",
+  "input_shape": "3x224x224",
+  "models": [
+    {
+      "name": "resnet18",
+      "macs_g": 1.82,
+      "params_m": 11.7,
+      "stages": [
+        {"name": "conv1", "macs_g": 0.12, "output_mb": 3.06},
+        {"name": "layer1", "macs_g": 0.42, "output_mb": 0.77},
+        {"name": "layer2", "macs_g": 0.46, "output_mb": 0.38},
+        {"name": "layer3", "macs_g": 0.45, "output_mb": 0.19},
+        {"name": "layer4", "macs_g": 0.36, "output_mb": 0.05},
+        {"name": "fc", "macs_g": 0.01, "output_mb": 0.01}
+      ]
+    },
+    {
+      "name": "resnet50",
+      "macs_g": 4.10,
+      "params_m": 25.6,
+      "blocks": [
+        {
+          "name": "stem",
+          "type": "Stem",
+          "source_stage": "conv1",
+          "macs_g": 0.12,
+          "weight_mb": 2.85,
+          "input_mb": 0.574,
+          "output_mb": 3.06,
+          "operators": ["7x7 Conv+BN+ReLU", "MaxPool"],
+          "branch_closed": true,
+          "depends_on": []
+        },
+        {
+          "name": "conv2_x.b1",
+          "type": "Bottleneck",
+          "source_stage": "conv2_x",
+          "macs_g": 0.2233333333,
+          "weight_mb": 0.85,
+          "input_mb": 3.06,
+          "output_mb": 0.77,
+          "operators": ["1x1 Conv+BN", "3x3 Conv+BN", "1x1 Conv+BN", "Shortcut+Add+ReLU"],
+          "branch_closed": true,
+          "depends_on": ["stem"]
+        },
+        {
+          "name": "conv2_x.b2",
+          "type": "Bottleneck",
+          "source_stage": "conv2_x",
+          "macs_g": 0.2233333333,
+          "weight_mb": 0.85,
+          "input_mb": 0.77,
+          "output_mb": 0.77,
+          "operators": ["1x1 Conv+BN", "3x3 Conv+BN", "1x1 Conv+BN", "Shortcut+Add+ReLU"],
+          "branch_closed": true,
+          "depends_on": ["conv2_x.b1"]
+        },
+        {
+          "name": "conv2_x.b3",
+          "type": "Bottleneck",
+          "source_stage": "conv2_x",
+          "macs_g": 0.2233333333,
+          "weight_mb": 0.85,
+          "input_mb": 0.77,
+          "output_mb": 0.77,
+          "operators": ["1x1 Conv+BN", "3x3 Conv+BN", "1x1 Conv+BN", "Shortcut+Add+ReLU"],
+          "branch_closed": true,
+          "depends_on": ["conv2_x.b2"]
+        },
+        {
+          "name": "conv3_x.b1",
+          "type": "Bottleneck",
+          "source_stage": "conv3_x",
+          "macs_g": 0.275,
+          "weight_mb": 3.47,
+          "input_mb": 0.77,
+          "output_mb": 0.38,
+          "operators": ["1x1 Conv+BN", "3x3 Conv+BN", "1x1 Conv+BN", "Projection Shortcut+Add+ReLU"],
+          "branch_closed": true,
+          "depends_on": ["conv2_x.b3"]
+        },
+        {
+          "name": "conv3_x.b2",
+          "type": "Bottleneck",
+          "source_stage": "conv3_x",
+          "macs_g": 0.275,
+          "weight_mb": 3.47,
+          "input_mb": 0.38,
+          "output_mb": 0.38,
+          "operators": ["1x1 Conv+BN", "3x3 Conv+BN", "1x1 Conv+BN", "Shortcut+Add+ReLU"],
+          "branch_closed": true,
+          "depends_on": ["conv3_x.b1"]
+        },
+        {
+          "name": "conv3_x.b3",
+          "type": "Bottleneck",
+          "source_stage": "conv3_x",
+          "macs_g": 0.275,
+          "weight_mb": 3.47,
+          "input_mb": 0.38,
+          "output_mb": 0.38,
+          "operators": ["1x1 Conv+BN", "3x3 Conv+BN", "1x1 Conv+BN", "Shortcut+Add+ReLU"],
+          "branch_closed": true,
+          "depends_on": ["conv3_x.b2"]
+        },
+        {
+          "name": "conv3_x.b4",
+          "type": "Bottleneck",
+          "source_stage": "conv3_x",
+          "macs_g": 0.275,
+          "weight_mb": 3.47,
+          "input_mb": 0.38,
+          "output_mb": 0.38,
+          "operators": ["1x1 Conv+BN", "3x3 Conv+BN", "1x1 Conv+BN", "Shortcut+Add+ReLU"],
+          "branch_closed": true,
+          "depends_on": ["conv3_x.b3"]
+        },
+        {
+          "name": "conv4_x.b1",
+          "type": "Bottleneck",
+          "source_stage": "conv4_x",
+          "macs_g": 0.2666666667,
+          "weight_mb": 10.38,
+          "input_mb": 0.38,
+          "output_mb": 0.19,
+          "operators": ["1x1 Conv+BN", "3x3 Conv+BN", "1x1 Conv+BN", "Projection Shortcut+Add+ReLU"],
+          "branch_closed": true,
+          "depends_on": ["conv3_x.b4"]
+        },
+        {
+          "name": "conv4_x.b2",
+          "type": "Bottleneck",
+          "source_stage": "conv4_x",
+          "macs_g": 0.2666666667,
+          "weight_mb": 10.38,
+          "input_mb": 0.19,
+          "output_mb": 0.19,
+          "operators": ["1x1 Conv+BN", "3x3 Conv+BN", "1x1 Conv+BN", "Shortcut+Add+ReLU"],
+          "branch_closed": true,
+          "depends_on": ["conv4_x.b1"]
+        },
+        {
+          "name": "conv4_x.b3",
+          "type": "Bottleneck",
+          "source_stage": "conv4_x",
+          "macs_g": 0.2666666667,
+          "weight_mb": 10.38,
+          "input_mb": 0.19,
+          "output_mb": 0.19,
+          "operators": ["1x1 Conv+BN", "3x3 Conv+BN", "1x1 Conv+BN", "Shortcut+Add+ReLU"],
+          "branch_closed": true,
+          "depends_on": ["conv4_x.b2"]
+        },
+        {
+          "name": "conv4_x.b4",
+          "type": "Bottleneck",
+          "source_stage": "conv4_x",
+          "macs_g": 0.2666666667,
+          "weight_mb": 10.38,
+          "input_mb": 0.19,
+          "output_mb": 0.19,
+          "operators": ["1x1 Conv+BN", "3x3 Conv+BN", "1x1 Conv+BN", "Shortcut+Add+ReLU"],
+          "branch_closed": true,
+          "depends_on": ["conv4_x.b3"]
+        },
+        {
+          "name": "conv4_x.b5",
+          "type": "Bottleneck",
+          "source_stage": "conv4_x",
+          "macs_g": 0.2666666667,
+          "weight_mb": 10.38,
+          "input_mb": 0.19,
+          "output_mb": 0.19,
+          "operators": ["1x1 Conv+BN", "3x3 Conv+BN", "1x1 Conv+BN", "Shortcut+Add+ReLU"],
+          "branch_closed": true,
+          "depends_on": ["conv4_x.b4"]
+        },
+        {
+          "name": "conv4_x.b6",
+          "type": "Bottleneck",
+          "source_stage": "conv4_x",
+          "macs_g": 0.2666666667,
+          "weight_mb": 10.38,
+          "input_mb": 0.19,
+          "output_mb": 0.19,
+          "operators": ["1x1 Conv+BN", "3x3 Conv+BN", "1x1 Conv+BN", "Shortcut+Add+ReLU"],
+          "branch_closed": true,
+          "depends_on": ["conv4_x.b5"]
+        },
+        {
+          "name": "conv5_x.b1",
+          "type": "Bottleneck",
+          "source_stage": "conv5_x",
+          "macs_g": 0.2,
+          "weight_mb": 5.14,
+          "input_mb": 0.19,
+          "output_mb": 0.05,
+          "operators": ["1x1 Conv+BN", "3x3 Conv+BN", "1x1 Conv+BN", "Projection Shortcut+Add+ReLU"],
+          "branch_closed": true,
+          "depends_on": ["conv4_x.b6"]
+        },
+        {
+          "name": "conv5_x.b2",
+          "type": "Bottleneck",
+          "source_stage": "conv5_x",
+          "macs_g": 0.2,
+          "weight_mb": 5.14,
+          "input_mb": 0.05,
+          "output_mb": 0.05,
+          "operators": ["1x1 Conv+BN", "3x3 Conv+BN", "1x1 Conv+BN", "Shortcut+Add+ReLU"],
+          "branch_closed": true,
+          "depends_on": ["conv5_x.b1"]
+        },
+        {
+          "name": "conv5_x.b3",
+          "type": "Bottleneck",
+          "source_stage": "conv5_x",
+          "macs_g": 0.2,
+          "weight_mb": 5.14,
+          "input_mb": 0.05,
+          "output_mb": 0.05,
+          "operators": ["1x1 Conv+BN", "3x3 Conv+BN", "1x1 Conv+BN", "Shortcut+Add+ReLU"],
+          "branch_closed": true,
+          "depends_on": ["conv5_x.b2"]
+        },
+        {
+          "name": "head",
+          "type": "Head",
+          "source_stage": "head",
+          "macs_g": 0.01,
+          "weight_mb": 0.04,
+          "input_mb": 0.05,
+          "output_mb": 0.01,
+          "operators": ["GlobalAvgPool", "FullyConnected"],
+          "branch_closed": true,
+          "depends_on": ["conv5_x.b3"]
+        }
+      ]
+    },
+    {
+      "name": "shufflenet_v2_x1_0",
+      "macs_g": 0.146,
+      "params_m": 2.3,
+      "stages": [
+        {"name": "conv1", "macs_g": 0.014, "output_mb": 1.53},
+        {"name": "stage2", "macs_g": 0.036, "output_mb": 0.38},
+        {"name": "stage3", "macs_g": 0.056, "output_mb": 0.19},
+        {"name": "stage4", "macs_g": 0.034, "output_mb": 0.05},
+        {"name": "conv5", "macs_g": 0.005, "output_mb": 0.01},
+        {"name": "fc", "macs_g": 0.001, "output_mb": 0.001}
+      ]
+    },
+    {
+      "name": "shufflenet_v2_x2_0",
+      "macs_g": 0.591,
+      "params_m": 7.4,
+      "stages": [
+        {"name": "conv1", "macs_g": 0.034, "output_mb": 3.06},
+        {"name": "stage2", "macs_g": 0.130, "output_mb": 0.77},
+        {"name": "stage3", "macs_g": 0.245, "output_mb": 0.38},
+        {"name": "stage4", "macs_g": 0.151, "output_mb": 0.10},
+        {"name": "conv5", "macs_g": 0.026, "output_mb": 0.02},
+        {"name": "fc", "macs_g": 0.005, "output_mb": 0.001}
+      ]
+    },
+    {
+      "name": "mobilenet_v2",
+      "macs_g": 0.300,
+      "params_m": 3.5,
+      "blocks": [
+        {
+          "name": "stem",
+          "type": "Stem",
+          "source_stage": "features.0",
+          "macs_g": 0.010,
+          "weight_mb": 0.03,
+          "input_mb": 0.574,
+          "output_mb": 3.06,
+          "operators": ["3x3 Conv+BN+ReLU6"],
+          "branch_closed": true,
+          "depends_on": []
+        },
+        {
+          "name": "features.1",
+          "type": "InvertedResidual",
+          "source_stage": "features.1",
+          "macs_g": 0.015,
+          "weight_mb": 0.20,
+          "input_mb": 3.06,
+          "output_mb": 3.06,
+          "operators": ["1x1 Expand+BN+ReLU6", "3x3 Depthwise+BN+ReLU6", "1x1 Project+BN"],
+          "branch_closed": true,
+          "depends_on": ["stem"]
+        },
+        {
+          "name": "features.2",
+          "type": "InvertedResidual",
+          "source_stage": "features.2",
+          "macs_g": 0.025,
+          "weight_mb": 0.35,
+          "input_mb": 3.06,
+          "output_mb": 1.53,
+          "operators": ["1x1 Expand+BN+ReLU6", "3x3 Depthwise+BN+ReLU6", "1x1 Project+BN"],
+          "branch_closed": true,
+          "depends_on": ["features.1"]
+        },
+        {
+          "name": "features.3",
+          "type": "InvertedResidual",
+          "source_stage": "features.3",
+          "macs_g": 0.035,
+          "weight_mb": 0.55,
+          "input_mb": 1.53,
+          "output_mb": 1.53,
+          "operators": ["1x1 Expand+BN+ReLU6", "3x3 Depthwise+BN+ReLU6", "1x1 Project+BN", "Residual Add"],
+          "branch_closed": true,
+          "depends_on": ["features.2"]
+        },
+        {
+          "name": "features.4",
+          "type": "InvertedResidual",
+          "source_stage": "features.4",
+          "macs_g": 0.045,
+          "weight_mb": 0.75,
+          "input_mb": 1.53,
+          "output_mb": 0.77,
+          "operators": ["1x1 Expand+BN+ReLU6", "3x3 Depthwise+BN+ReLU6", "1x1 Project+BN"],
+          "branch_closed": true,
+          "depends_on": ["features.3"]
+        },
+        {
+          "name": "features.5",
+          "type": "InvertedResidual",
+          "source_stage": "features.5",
+          "macs_g": 0.050,
+          "weight_mb": 0.80,
+          "input_mb": 0.77,
+          "output_mb": 0.77,
+          "operators": ["1x1 Expand+BN+ReLU6", "3x3 Depthwise+BN+ReLU6", "1x1 Project+BN", "Residual Add"],
+          "branch_closed": true,
+          "depends_on": ["features.4"]
+        },
+        {
+          "name": "features.6",
+          "type": "InvertedResidual",
+          "source_stage": "features.6",
+          "macs_g": 0.055,
+          "weight_mb": 0.90,
+          "input_mb": 0.77,
+          "output_mb": 0.38,
+          "operators": ["1x1 Expand+BN+ReLU6", "3x3 Depthwise+BN+ReLU6", "1x1 Project+BN"],
+          "branch_closed": true,
+          "depends_on": ["features.5"]
+        },
+        {
+          "name": "features.7",
+          "type": "InvertedResidual",
+          "source_stage": "features.7",
+          "macs_g": 0.045,
+          "weight_mb": 0.95,
+          "input_mb": 0.38,
+          "output_mb": 0.05,
+          "operators": ["1x1 Expand+BN+ReLU6", "3x3 Depthwise+BN+ReLU6", "1x1 Project+BN"],
+          "branch_closed": true,
+          "depends_on": ["features.6"]
+        },
+        {
+          "name": "head",
+          "type": "Head",
+          "source_stage": "classifier",
+          "macs_g": 0.020,
+          "weight_mb": 0.50,
+          "input_mb": 0.05,
+          "output_mb": 0.01,
+          "operators": ["1x1 Conv+BN+ReLU6", "GlobalAvgPool", "FullyConnected"],
+          "branch_closed": true,
+          "depends_on": ["features.7"]
+        }
+      ]
+    },
+    {
+      "name": "efficientnet_b0",
+      "macs_g": 0.390,
+      "params_m": 5.3,
+      "blocks": [
+        {
+          "name": "stem",
+          "type": "Stem",
+          "source_stage": "features.0",
+          "macs_g": 0.010,
+          "weight_mb": 0.04,
+          "input_mb": 0.574,
+          "output_mb": 3.06,
+          "operators": ["3x3 Conv+BN+Swish"],
+          "branch_closed": true,
+          "depends_on": []
+        },
+        {
+          "name": "features.1",
+          "type": "MBConv",
+          "source_stage": "features.1",
+          "macs_g": 0.015,
+          "weight_mb": 0.20,
+          "input_mb": 3.06,
+          "output_mb": 3.06,
+          "operators": ["1x1 Expand+BN+Swish", "Depthwise Conv+BN+Swish", "Squeeze-and-Excitation", "1x1 Project+BN"],
+          "branch_closed": true,
+          "depends_on": ["stem"]
+        },
+        {
+          "name": "features.2",
+          "type": "MBConv",
+          "source_stage": "features.2",
+          "macs_g": 0.025,
+          "weight_mb": 0.35,
+          "input_mb": 3.06,
+          "output_mb": 1.53,
+          "operators": ["1x1 Expand+BN+Swish", "Depthwise Conv+BN+Swish", "Squeeze-and-Excitation", "1x1 Project+BN"],
+          "branch_closed": true,
+          "depends_on": ["features.1"]
+        },
+        {
+          "name": "features.3",
+          "type": "MBConv",
+          "source_stage": "features.3",
+          "macs_g": 0.035,
+          "weight_mb": 0.55,
+          "input_mb": 1.53,
+          "output_mb": 1.53,
+          "operators": ["1x1 Expand+BN+Swish", "Depthwise Conv+BN+Swish", "Squeeze-and-Excitation", "1x1 Project+BN", "Residual Add"],
+          "branch_closed": true,
+          "depends_on": ["features.2"]
+        },
+        {
+          "name": "features.4",
+          "type": "MBConv",
+          "source_stage": "features.4",
+          "macs_g": 0.055,
+          "weight_mb": 0.80,
+          "input_mb": 1.53,
+          "output_mb": 0.77,
+          "operators": ["1x1 Expand+BN+Swish", "Depthwise Conv+BN+Swish", "Squeeze-and-Excitation", "1x1 Project+BN"],
+          "branch_closed": true,
+          "depends_on": ["features.3"]
+        },
+        {
+          "name": "features.5",
+          "type": "MBConv",
+          "source_stage": "features.5",
+          "macs_g": 0.075,
+          "weight_mb": 1.10,
+          "input_mb": 0.77,
+          "output_mb": 0.77,
+          "operators": ["1x1 Expand+BN+Swish", "Depthwise Conv+BN+Swish", "Squeeze-and-Excitation", "1x1 Project+BN", "Residual Add"],
+          "branch_closed": true,
+          "depends_on": ["features.4"]
+        },
+        {
+          "name": "features.6",
+          "type": "MBConv",
+          "source_stage": "features.6",
+          "macs_g": 0.085,
+          "weight_mb": 1.40,
+          "input_mb": 0.77,
+          "output_mb": 0.38,
+          "operators": ["1x1 Expand+BN+Swish", "Depthwise Conv+BN+Swish", "Squeeze-and-Excitation", "1x1 Project+BN"],
+          "branch_closed": true,
+          "depends_on": ["features.5"]
+        },
+        {
+          "name": "features.7",
+          "type": "MBConv",
+          "source_stage": "features.7",
+          "macs_g": 0.060,
+          "weight_mb": 1.60,
+          "input_mb": 0.38,
+          "output_mb": 0.19,
+          "operators": ["1x1 Expand+BN+Swish", "Depthwise Conv+BN+Swish", "Squeeze-and-Excitation", "1x1 Project+BN"],
+          "branch_closed": true,
+          "depends_on": ["features.6"]
+        },
+        {
+          "name": "head",
+          "type": "Head",
+          "source_stage": "classifier",
+          "macs_g": 0.030,
+          "weight_mb": 0.55,
+          "input_mb": 0.19,
+          "output_mb": 0.01,
+          "operators": ["1x1 Conv+BN+Swish", "GlobalAvgPool", "FullyConnected"],
+          "branch_closed": true,
+          "depends_on": ["features.7"]
+        }
+      ]
+    }
+  ]
+}

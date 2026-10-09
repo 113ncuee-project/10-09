@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="361.3" height="777.7" viewBox="0 0 361.3 777.7">
+<rect width="100%" height="100%" fill="white"/>
+<line x1="67.50864087653555" y1="67.50864087653555" x2="105.21728175307112" y2="229.28389135617655" stroke="#8795a4" stroke-width="2"/>
+<line x1="142.92592262960667" y1="67.50864087653555" x2="105.21728175307112" y2="229.28389135617655" stroke="#8795a4" stroke-width="2"/>
+<line x1="67.50864087653555" y1="142.92592262960667" x2="105.21728175307112" y2="229.28389135617655" stroke="#8795a4" stroke-width="2"/>
+<line x1="142.92592262960667" y1="142.92592262960667" x2="105.21728175307112" y2="229.28389135617655" stroke="#8795a4" stroke-width="2"/>
+<line x1="105.21728175307112" y1="333.39885066620576" x2="105.21728175307112" y2="229.28389135617655" stroke="#8795a4" stroke-width="2"/>
+<line x1="105.21728175307112" y1="229.28389135617655" x2="259.65184525921336" y2="229.28389135617655" stroke="#188445" stroke-width="2"/>
+<line x1="105.21728175307112" y1="229.28389135617655" x2="105.21728175307112" y2="591.9483734823774" stroke="#188445" stroke-width="2"/>
+<line x1="221.94320438267778" y1="67.50864087653555" x2="259.65184525921336" y2="229.28389135617655" stroke="#8795a4" stroke-width="2"/>
+<line x1="297.3604861357489" y1="67.50864087653555" x2="259.65184525921336" y2="229.28389135617655" stroke="#8795a4" stroke-width="2"/>
+<line x1="221.94320438267778" y1="142.92592262960667" x2="259.65184525921336" y2="229.28389135617655" stroke="#8795a4" stroke-width="2"/>
+<line x1="297.3604861357489" y1="142.92592262960667" x2="259.65184525921336" y2="229.28389135617655" stroke="#8795a4" stroke-width="2"/>
+<line x1="259.65184525921336" y1="333.39885066620576" x2="259.65184525921336" y2="229.28389135617655" stroke="#8795a4" stroke-width="2"/>
+<line x1="259.65184525921336" y1="229.28389135617655" x2="259.65184525921336" y2="591.9483734823774" stroke="#188445" stroke-width="2"/>
+<line x1="67.50864087653555" y1="430.1731230027363" x2="105.21728175307112" y2="591.9483734823774" stroke="#8795a4" stroke-width="2"/>
+<line x1="142.92592262960667" y1="430.1731230027363" x2="105.21728175307112" y2="591.9483734823774" stroke="#8795a4" stroke-width="2"/>
+<line x1="67.50864087653555" y1="505.59040475580747" x2="105.21728175307112" y2="591.9483734823774" stroke="#8795a4" stroke-width="2"/>
+<line x1="142.92592262960667" y1="505.59040475580747" x2="105.21728175307112" y2="591.9483734823774" stroke="#8795a4" stroke-width="2"/>
+<line x1="105.21728175307112" y1="696.0633327924065" x2="105.21728175307112" y2="591.9483734823774" stroke="#8795a4" stroke-width="2"/>
+<line x1="105.21728175307112" y1="591.9483734823774" x2="259.65184525921336" y2="591.9483734823774" stroke="#188445" stroke-width="2"/>
+<line x1="221.94320438267778" y1="430.1731230027363" x2="259.65184525921336" y2="591.9483734823774" stroke="#8795a4" stroke-width="2"/>
+<line x1="297.3604861357489" y1="430.1731230027363" x2="259.65184525921336" y2="591.9483734823774" stroke="#8795a4" stroke-width="2"/>
+<line x1="221.94320438267778" y1="505.59040475580747" x2="259.65184525921336" y2="591.9483734823774" stroke="#8795a4" stroke-width="2"/>
+<line x1="297.3604861357489" y1="505.59040475580747" x2="259.65184525921336" y2="591.9483734823774" stroke="#8795a4" stroke-width="2"/>
+<line x1="259.65184525921336" y1="696.0633327924065" x2="259.65184525921336" y2="591.9483734823774" stroke="#8795a4" stroke-width="2"/>
+<rect data-node="compute:0" x="31.6" y="31.6" width="71.81728175307111" height="71.81728175307111" fill="#d9eaf8" stroke="#233548"/>
+<text pointer-events="none" x="67.50864087653557" y="67.50864087653557" text-anchor="middle" dominant-baseline="middle" font-family="Arial" font-size="9">compute:0</text>
+<rect data-node="compute:1" x="107.0172817530711" y="31.6" width="71.81728175307111" height="71.81728175307111" fill="#d9eaf8" stroke="#233548"/>
+<text pointer-events="none" x="142.92592262960665" y="67.50864087653557" text-anchor="middle" dominant-baseline="middle" font-family="Arial" font-size="9">compute:1</text>
+<rect data-node="compute:2" x="31.6" y="107.0172817530711" width="71.81728175307111" height="71.81728175307111" fill="#d9eaf8" stroke="#233548"/>
+<text pointer-events="none" x="67.50864087653557" y="142.92592262960665" text-anchor="middle" dominant-baseline="middle" font-family="Arial" font-size="9">compute:2</text>
+<rect data-node="compute:3" x="107.0172817530711" y="107.0172817530711" width="71.81728175307111" height="71.81728175307111" fill="#d9eaf8" stroke="#233548"/>
+<text pointer-events="none" x="142.92592262960665" y="142.92592262960665" text-anchor="middle" dominant-baseline="middle" font-family="Arial" font-size="9">compute:3</text>
+<rect data-node="io:0" x="58.36795390303681" y="182.43456350614224" width="93.69865570006861" height="93.69865570006861" fill="#bde2cb" stroke="#233548"/>
+<text pointer-events="none" x="105.21728175307112" y="229.28389135617655" text-anchor="middle" dominant-baseline="middle" font-family="Arial" font-size="9">io:0</text>
+<rect data-node="memory:0" x="51.551650293076165" y="279.73321920621083" width="107.33126291998991" height="107.33126291998991" fill="#ffe3a2" stroke="#233548"/>
+<text pointer-events="none" x="105.21728175307112" y="333.3988506662058" text-anchor="middle" dominant-baseline="middle" font-family="Arial" font-size="9">memory:0</text>
+<rect data-node="compute:4" x="186.03456350614223" y="31.6" width="71.81728175307111" height="71.81728175307111" fill="#d9eaf8" stroke="#233548"/>
+<text pointer-events="none" x="221.94320438267778" y="67.50864087653557" text-anchor="middle" dominant-baseline="middle" font-family="Arial" font-size="9">compute:4</text>
+<rect data-node="compute:5" x="261.4518452592133" y="31.6" width="71.81728175307111" height="71.81728175307111" fill="#d9eaf8" stroke="#233548"/>
+<text pointer-events="none" x="297.3604861357489" y="67.50864087653557" text-anchor="middle" dominant-baseline="middle" font-family="Arial" font-size="9">compute:5</text>
+<rect data-node="compute:6" x="186.03456350614223" y="107.0172817530711" width="71.81728175307111" height="71.81728175307111" fill="#d9eaf8" stroke="#233548"/>
+<text pointer-events="none" x="221.94320438267778" y="142.92592262960665" text-anchor="middle" dominant-baseline="middle" font-family="Arial" font-size="9">compute:6</text>
+<rect data-node="compute:7" x="261.4518452592133" y="107.0172817530711" width="71.81728175307111" height="71.81728175307111" fill="#d9eaf8" stroke="#233548"/>
+<text pointer-events="none" x="297.3604861357489" y="142.92592262960665" text-anchor="middle" dominant-baseline="middle" font-family="Arial" font-size="9">compute:7</text>
+<rect data-node="io:1" x="212.80251740917905" y="182.43456350614224" width="93.69865570006861" height="93.69865570006861" fill="#bde2cb" stroke="#233548"/>
+<text pointer-events="none" x="259.65184525921336" y="229.28389135617655" text-anchor="middle" dominant-baseline="middle" font-family="Arial" font-size="9">io:1</text>
+<rect data-node="memory:1" x="205.9862137992184" y="279.73321920621083" width="107.33126291998991" height="107.33126291998991" fill="#ffe3a2" stroke="#233548"/>
+<text pointer-events="none" x="259.65184525921336" y="333.3988506662058" text-anchor="middle" dominant-baseline="middle" font-family="Arial" font-size="9">memory:1</text>
+<rect data-node="compute:8" x="31.6" y="394.26448212620073" width="71.81728175307111" height="71.81728175307111" fill="#d9eaf8" stroke="#233548"/>
+<text pointer-events="none" x="67.50864087653557" y="430.1731230027363" text-anchor="middle" dominant-baseline="middle" font-family="Arial" font-size="9">compute:8</text>
+<rect data-node="compute:9" x="107.0172817530711" y="394.26448212620073" width="71.81728175307111" height="71.81728175307111" fill="#d9eaf8" stroke="#233548"/>
+<text pointer-events="none" x="142.92592262960665" y="430.1731230027363" text-anchor="middle" dominant-baseline="middle" font-family="Arial" font-size="9">compute:9</text>
+<rect data-node="compute:10" x="31.6" y="469.6817638792719" width="71.81728175307111" height="71.81728175307111" fill="#d9eaf8" stroke="#233548"/>
+<text pointer-events="none" x="67.50864087653557" y="505.59040475580747" text-anchor="middle" dominant-baseline="middle" font-family="Arial" font-size="9">compute:10</text>
+<rect data-node="compute:11" x="107.0172817530711" y="469.6817638792719" width="71.81728175307111" height="71.81728175307111" fill="#d9eaf8" stroke="#233548"/>
+<text pointer-events="none" x="142.92592262960665" y="505.59040475580747" text-anchor="middle" dominant-baseline="middle" font-family="Arial" font-size="9">compute:11</text>
+<rect data-node="io:2" x="58.36795390303681" y="545.0990456323431" width="93.69865570006861" height="93.69865570006861" fill="#bde2cb" stroke="#233548"/>
+<text pointer-events="none" x="105.21728175307112" y="591.9483734823774" text-anchor="middle" dominant-baseline="middle" font-family="Arial" font-size="9">io:2</text>
+<rect data-node="memory:2" x="51.551650293076165" y="642.3977013324115" width="107.33126291998991" height="107.33126291998991" fill="#ffe3a2" stroke="#233548"/>
+<text pointer-events="none" x="105.21728175307112" y="696.0633327924065" text-anchor="middle" dominant-baseline="middle" font-family="Arial" font-size="9">memory:2</text>
+<rect data-node="compute:12" x="186.03456350614223" y="394.26448212620073" width="71.81728175307111" height="71.81728175307111" fill="#d9eaf8" stroke="#233548"/>
+<text pointer-events="none" x="221.94320438267778" y="430.1731230027363" text-anchor="middle" dominant-baseline="middle" font-family="Arial" font-size="9">compute:12</text>
+<rect data-node="compute:13" x="261.4518452592133" y="394.26448212620073" width="71.81728175307111" height="71.81728175307111" fill="#d9eaf8" stroke="#233548"/>
+<text pointer-events="none" x="297.3604861357489" y="430.1731230027363" text-anchor="middle" dominant-baseline="middle" font-family="Arial" font-size="9">compute:13</text>
+<rect data-node="compute:14" x="186.03456350614223" y="469.6817638792719" width="71.81728175307111" height="71.81728175307111" fill="#d9eaf8" stroke="#233548"/>
+<text pointer-events="none" x="221.94320438267778" y="505.59040475580747" text-anchor="middle" dominant-baseline="middle" font-family="Arial" font-size="9">compute:14</text>
+<rect data-node="compute:15" x="261.4518452592133" y="469.6817638792719" width="71.81728175307111" height="71.81728175307111" fill="#d9eaf8" stroke="#233548"/>
+<text pointer-events="none" x="297.3604861357489" y="505.59040475580747" text-anchor="middle" dominant-baseline="middle" font-family="Arial" font-size="9">compute:15</text>
+<rect data-node="io:3" x="212.80251740917905" y="545.0990456323431" width="93.69865570006861" height="93.69865570006861" fill="#bde2cb" stroke="#233548"/>
+<text pointer-events="none" x="259.65184525921336" y="591.9483734823774" text-anchor="middle" dominant-baseline="middle" font-family="Arial" font-size="9">io:3</text>
+<rect data-node="memory:3" x="205.9862137992184" y="642.3977013324115" width="107.33126291998991" height="107.33126291998991" fill="#ffe3a2" stroke="#233548"/>
+<text pointer-events="none" x="259.65184525921336" y="696.0633327924065" text-anchor="middle" dominant-baseline="middle" font-family="Arial" font-size="9">memory:3</text>
+</svg>
